@@ -6,7 +6,7 @@ using Photon.Realtime;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(InputField))]
-public class NewBehaviourScript : MonoBehaviour
+public class PlayerNameInputField : MonoBehaviour
 {
     #region Private Constants
     const string playerNamePrefKey = "PlayerName";

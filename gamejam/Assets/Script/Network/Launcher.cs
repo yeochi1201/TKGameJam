@@ -9,6 +9,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
     [SerializeField]
     private byte maxPlayersPerRoom = 4;
+    public GameObject controlPanel;
+    public GameObject progressLabel;
+
     #region Private Serializable Fields
     
     #endregion
@@ -26,13 +29,16 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
     }
     #endregion
 
     #region Public Methods
     public void Connect()
     {
+        progressLabel.SetActive(true);
+        controlPanel.SetActive(false);
         if(PhotonNetwork.IsConnected)
         {
             PhotonNetwork.JoinRandomRoom();
@@ -54,6 +60,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
     public override void OnDisconnected(DisconnectCause cause)
     {
+        progressLabel.SetActive(false);
+        controlPanel.SetActive(true);
         Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was PUN with reason {0}", cause);
     }
 
