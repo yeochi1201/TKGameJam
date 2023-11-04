@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour ,Damageable
     SuperPower mySuperPower;
 
     public bool isSeeRight;
+    public bool isDead=false;
+
+    public GameObject[] items; // 드롭할 아이템 프리팹 배열
     void Start()
     {
         Status = new PlayerStats(100f, 5f, 10f);
@@ -36,7 +39,7 @@ public class PlayerController : MonoBehaviour ,Damageable
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePosition - this.transform.position;
-        if(!Eating)Move();
+        if(!isDead&&!Eating)Move();
         if (direction.x < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
@@ -45,11 +48,12 @@ public class PlayerController : MonoBehaviour ,Damageable
         {
              GetComponent<SpriteRenderer>().flipX = false;
         }
-        if(canAttack&&Input.GetMouseButtonDown(0))Attack();        
-        //if(this.Status.Hp<=0) Dead()함수 출력;
+        if(canAttack&&Input.GetMouseButtonDown(0)) Attack();        
+        if(this.Status.Hp<=0) Daed();
+        if(Input.GetKey(KeyCode.T))this.Status.Hp=0;
     }
 
-    void Move()
+    private void Move()
     {
         Vector3 movePosition = Vector3.zero;
         float verticalMove = Input.GetAxisRaw("Vertical");
@@ -94,7 +98,7 @@ public class PlayerController : MonoBehaviour ,Damageable
                 }
                 break;
             case "SuperPower":
-                if(Input.GetKey(KeyCode.F))
+                if(mySuperPower==null&&Input.GetKey(KeyCode.F))
                 {
                     Eating=true;
                     StartCoroutine(StartEating());
@@ -107,7 +111,15 @@ public class PlayerController : MonoBehaviour ,Damageable
                 break;
         }
     }
-    void ConsumeItem(Potion item)
+    private void OnTriggerEnter2D(Collider2D other)
+     {
+      if (other.CompareTag("RestricArea"))
+      {
+          //즉사, 추후에  즉사 파티클 추가
+        this.Status.Hp=0;
+      }  
+    } 
+    private void ConsumeItem(Potion item)
     {
         StartCoroutine(StartAddItemCooldown());
         switch (item.GetPotionType())
@@ -127,12 +139,13 @@ public class PlayerController : MonoBehaviour ,Damageable
         }   
     }
 
-    void GetSuperPower(SuperPower item)
+    private void GetSuperPower(SuperPower item)
     {
         switch(item.GetPowerType())
         {
             case PowerType.Unstoppable:
                 mySuperPower=gameObject.AddComponent<Unstoppable>();
+                
                 break;
             case PowerType.Electrokinetic:
                 mySuperPower=gameObject.AddComponent<Electrokinetic>();
@@ -143,10 +156,11 @@ public class PlayerController : MonoBehaviour ,Damageable
             mySuperPower.attackSkillPrefab=item.attackSkillPrefab;
         }   
     }
-    void Attack()
+    private void Attack()
     {
         animator.SetTrigger("Attack");
         canAttack=false;
+        Invoke("StartCoroutine(StartAttackCool());", 1.0f);
         StartCoroutine(StartAttackCool());
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, attackRange, targetLayer);
         foreach (Collider2D target in hitTargets)
@@ -167,6 +181,27 @@ public class PlayerController : MonoBehaviour ,Damageable
         }
         
     }
+    private void Daed()
+    {
+        if(!isDead)
+        {
+            DeropItem();
+        }
+    }
+    void DeropItem()
+    {
+        isDead=true;
+        animator.SetTrigger("Dead");
+        foreach (GameObject itemPrefab in items)
+        {
+            // 아이템을 생성하고 무작위 위치에 떨어뜨림
+            Vector2 randomPosition = Random.insideUnitCircle * 1.2f; // 반지름 2.0f 내에서 무작위 위치
+            Vector3 dropPosition = new Vector3(transform.position.x + randomPosition.x, transform.position.y + randomPosition.y, 0f);
+            Instantiate(itemPrefab, dropPosition, Quaternion.identity);
+        }
+        Invoke("Destroy", 1.5f);
+    }
+
     public IEnumerator StartAttackCool()
     {
     yield return new WaitForSeconds(2.0f);
