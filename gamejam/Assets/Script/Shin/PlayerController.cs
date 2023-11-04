@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour ,Damageable
     Vector3 mousePosition;
     Vector3 direction;
 
+    public SuperPower superPower;
+
     void Start()
     {
         Status = new PlayerStats(100f, 5f, 10f);
@@ -79,16 +81,28 @@ public class PlayerController : MonoBehaviour ,Damageable
                 {
                     Eating=true;
                     StartCoroutine(StartEating());
+                    StartCoroutine(StartAddItemCooldown());
                     Potion item = other.GetComponent<Potion>();
                     ConsumeItem(item);
                     Destroy(other.gameObject);  
                 }
-            break;
+                break;
+            case "SuperPower":
+                if(Input.GetKey(KeyCode.F))
+                {
+                    Eating=true;
+                    StartCoroutine(StartEating());
+                    StartCoroutine(StartAddItemCooldown());
+                    SuperPower item = other.GetComponent<SuperPower>();
+                    GetSuperPower(item);
+                    Destroy(other.gameObject);  
+                    //other.gameObject.SetActive(false);
+                }
+                break;
         }
     }
     void ConsumeItem(Potion item)
     {
-        StartCoroutine(StartAddItemCooldown());
         switch (item.GetPotionType())
         {
         case PotionType.Hp:
@@ -105,6 +119,16 @@ public class PlayerController : MonoBehaviour ,Damageable
             break;    
         }   
     }
+    void GetSuperPower(SuperPower item)
+    {
+        SuperPower superPower = item.GetComponent<SuperPower>();
+        if (superPower != null)
+        {
+            SuperPower newSuperPower = gameObject.AddComponent<SuperPower>();
+            newSuperPower=superPower;
+        }
+    }
+
     void Attack()
     {
         animator.SetTrigger("Attack");
@@ -116,7 +140,6 @@ public class PlayerController : MonoBehaviour ,Damageable
             Damageable damageable = target.GetComponent<Damageable>();
             if (damageable != null)
             {
-                Debug.Log("머지");
                 damageable.HitDamage(Status.attackDamage); 
             }
         }

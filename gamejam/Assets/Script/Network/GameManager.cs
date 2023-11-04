@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
-
 public class GameManager : MonoBehaviourPunCallbacks
 {
     #region Public Fields
@@ -25,10 +24,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient);
 
             LoadArena();
-        }
-        if(PhotonNetwork.CurrentRoom.PlayerCount == 4)
-        {
-            GameStart();
         }
     }
 
@@ -57,7 +52,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void GameStart()
     {
-        PhotonNetwork.LoadLevel("BattleField");
+        SceneManager.LoadScene(2);
     }
     #endregion
 
@@ -70,6 +65,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             return;
         }
         Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+        PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
     }
     #endregion
 }

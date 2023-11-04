@@ -7,6 +7,7 @@ TagManager:
   - Box
   - Bullet
   - Potion
+  - SuperPower
   layers:
   - Default
   - TransparentFX

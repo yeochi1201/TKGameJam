@@ -86,11 +86,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         if(PhotonNetwork.CurrentRoom.PlayerCount <= 3)
         {
             Debug.Log("We load the Room for wait");
-            PhotonNetwork.LoadLevel("Room for Wait");
+            PhotonNetwork.LoadLevel("Room for wait");
         }
         else if(PhotonNetwork.CurrentRoom.PlayerCount==4){
             Debug.Log("Game Start");
-            PhotonNetwork.LoadLevel("BattleField");
+            GameManager.instance.GameStart();
         }
     }
     #endregion

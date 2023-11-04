@@ -10,10 +10,14 @@ public class Item : MonoBehaviour
     
     void Awake()
     {
+        
         ItemStatusPos = transform.position + new Vector3(0f, 2.0f, 0f);
+        if (ItemStatusPrefab != null)
+    {
         ItemStatus = Instantiate(ItemStatusPrefab, ItemStatusPos, Quaternion.identity);
         ItemStatus.transform.parent = this.transform;
         ItemStatus.SetActive(false);
+    }
     }
    
     private void OnTriggerStay2D(Collider2D other)
