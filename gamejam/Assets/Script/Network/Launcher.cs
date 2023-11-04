@@ -83,10 +83,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-        if(PhotonNetwork.CurrentRoom.PlayerCount <= 4)
+        if(PhotonNetwork.CurrentRoom.PlayerCount <= 3)
         {
             Debug.Log("We load the Room for wait");
             PhotonNetwork.LoadLevel("Room for wait");
+        }
+        else if(PhotonNetwork.CurrentRoom.PlayerCount==4){
+            Debug.Log("Game Start");
+            GameManager.instance.GameStart();
         }
     }
     #endregion
