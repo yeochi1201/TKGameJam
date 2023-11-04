@@ -55,10 +55,10 @@ public class PlayerController : MonoBehaviour ,Damageable
     }
 
     void AttackTrue() {
-        attacked = true;
+        canAttack = true;
     }
     void AttackFalse() {
-        attacked = false;
+        canAttack = false;
     }
     void SetAttackSpeed(float speed) {
         animator.SetFloat("attackSpeed", speed);
