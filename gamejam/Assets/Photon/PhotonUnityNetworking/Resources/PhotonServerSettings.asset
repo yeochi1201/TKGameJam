@@ -40,6 +40,15 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - choiceSpawnpos
+  - ConsumeItem
+  - flipRPC
+  - GetSuperPower
+  - HitDamage
+  - moveRPC
+  - AttachUnstoppable
+  - increaseHP
+  - increaseSPD
+  - AttachElectrokinetic
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

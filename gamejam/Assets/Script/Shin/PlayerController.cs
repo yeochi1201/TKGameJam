@@ -1,12 +1,15 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour ,Damageable
 {
+    public GameObject BodyCam;
     public PlayerStats Status;
     private Animator animator;
-    
+    public PhotonView pv;
     private float attakSpeed = 0.3f;
     public bool canAttack=true;
 
@@ -34,22 +37,37 @@ public class PlayerController : MonoBehaviour ,Damageable
     }
     void Update()
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        direction = mousePosition - this.transform.position;
-        if(!Eating)Move();
+        if (pv.IsMine)
+        {
+            mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            direction = mousePosition - this.transform.position;
+            if (!Eating)
+            {
+                move();
+            }
+                pv.RPC("flipRPC", RpcTarget.All, direction);
+            if (canAttack && Input.GetMouseButtonDown(0)) Attack();
+        }
+        //if(this.Status.Hp<=0) Dead()함수 출력;
+    }
+    [PunRPC]
+    void flipRPC(Vector3 direction)
+    {
         if (direction.x < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
         }
         else
         {
-             GetComponent<SpriteRenderer>().flipX = false;
+            GetComponent<SpriteRenderer>().flipX = false;
         }
-        if(canAttack&&Input.GetMouseButtonDown(0))Attack();        
-        //if(this.Status.Hp<=0) Dead()함수 출력;
     }
-
-    void Move()
+    [PunRPC]
+    void moveRPC(Vector3 mov_pos)
+    {
+        transform.position += mov_pos * this.Status.speed * Time.deltaTime;
+    }
+    void move()
     {
         Vector3 movePosition = Vector3.zero;
         float verticalMove = Input.GetAxisRaw("Vertical");
@@ -76,36 +94,53 @@ public class PlayerController : MonoBehaviour ,Damageable
                 animator.SetBool("isWalk", false);
             }
         }
-        transform.position += movePosition * this.Status.speed * Time.deltaTime;
+        pv.RPC("moveRPC", RpcTarget.All, movePosition);
     }
     private void OnTriggerStay2D(Collider2D other)
     {
-        switch(other.tag)
+        if (pv.IsMine)
         {
-            case "Potion":
-                if(Input.GetKey(KeyCode.F))
-                {
-                    Eating=true;
-                    StartCoroutine(StartEating());
-                    StartCoroutine(StartAddItemCooldown());
-                    Potion item = other.GetComponent<Potion>();
-                    ConsumeItem(item);
-                    Destroy(other.gameObject);  
-                }
-                break;
-            case "SuperPower":
-                if(Input.GetKey(KeyCode.F))
-                {
-                    Eating=true;
-                    StartCoroutine(StartEating());
-                    StartCoroutine(StartAddItemCooldown());
-                    SuperPower item = other.GetComponent<SuperPower>();
-                    GetSuperPower(item);
-                    Destroy(other.gameObject);  
-                    //other.gameObject.SetActive(false);
-                }
-                break;
-        }
+            switch (other.tag)
+            {
+                case "Potion":
+                    if (Input.GetKey(KeyCode.F))
+                    {
+                        Eating = true;
+                        StartCoroutine(StartEating());
+                        StartCoroutine(StartAddItemCooldown());
+                        Potion item = other.GetComponent<Potion>();
+                        ConsumeItem(item);
+                        Destroy(other.gameObject);
+                    }
+                    break;
+                case "SuperPower":
+                    if (Input.GetKey(KeyCode.F))
+                    {
+                        Eating = true;
+                        StartCoroutine(StartEating());
+                        StartCoroutine(StartAddItemCooldown());
+                        SuperPower item = other.GetComponent<SuperPower>();
+                        GetSuperPower(item);
+                        Destroy(other.gameObject);
+                        //other.gameObject.SetActive(false);
+                    }
+                    break;
+            }
+        } 
+    }
+    [PunRPC]
+    void increaseHP()
+    {
+        Status.Hp += 10;
+    }
+    [PunRPC]
+    void increaseSPD()
+    {
+        Status.speed += 1f;
+    }
+    void increaseATK()
+    {
+        Status.attackDamage += 2f;
     }
     void ConsumeItem(Potion item)
     {
@@ -113,35 +148,49 @@ public class PlayerController : MonoBehaviour ,Damageable
         switch (item.GetPotionType())
         {
         case PotionType.Hp:
-            Status.Hp += 10;  
+            pv.RPC("increaseHP", RpcTarget.All);  
             Debug.Log("체력 물약을 먹었습니다.");
             break;
         case PotionType.Speed:
-            Status.speed += 1f; 
-            Debug.Log("스피드 물약을 먹었습니다.");
+                pv.RPC("increaseSPD", RpcTarget.All);
+                Debug.Log("스피드 물약을 먹었습니다.");
             break;
         case PotionType.Strength:
-            Status.attackDamage += 2f; 
+            pv.RPC("increaseATK",RpcTarget.All);
             Debug.Log("힘 물약을 먹었습니다.");
             break;    
         }   
     }
-
+    [PunRPC]
+    void AttachUnstoppable(SuperPower item)
+    {
+        mySuperPower = gameObject.AddComponent<Unstoppable>();
+        if (item.attackSkillPrefab != null)
+        {
+            mySuperPower.attackSkillPrefab = item.attackSkillPrefab;
+        }
+    }
+    [PunRPC]
+    void AttachElectrokinetic(SuperPower item)
+    {
+        mySuperPower = gameObject.AddComponent<Electrokinetic>();
+        if (item.attackSkillPrefab != null)
+        {
+            mySuperPower.attackSkillPrefab = item.attackSkillPrefab;
+        }
+    }
     void GetSuperPower(SuperPower item)
     {
         switch(item.GetPowerType())
         {
             case PowerType.Unstoppable:
-                mySuperPower=gameObject.AddComponent<Unstoppable>();
+                pv.RPC("AttachUnstoppable", RpcTarget.All, item);
                 break;
             case PowerType.Electrokinetic:
-                mySuperPower=gameObject.AddComponent<Electrokinetic>();
+                pv.RPC("AttachElectrokinetic", RpcTarget.All, item);
                 break;
         }
-        if(item.attackSkillPrefab!=null)
-        {
-            mySuperPower.attackSkillPrefab=item.attackSkillPrefab;
-        }   
+        
     }
     void Attack()
     {
@@ -154,10 +203,11 @@ public class PlayerController : MonoBehaviour ,Damageable
             Damageable damageable = target.GetComponent<Damageable>();
             if (damageable != null) 
             {
-                damageable.HitDamage(Status.attackDamage); 
+                pv.RPC("HitDamage", RpcTarget.All, Status.attackDamage);
             }
         }
     }
+    [PunRPC]
     public void HitDamage(float damage)
     {   
 

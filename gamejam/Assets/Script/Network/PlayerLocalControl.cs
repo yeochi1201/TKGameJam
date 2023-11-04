@@ -9,9 +9,11 @@ using JetBrains.Annotations;
 public class PlayerLocalControl : MonoBehaviourPunCallbacks
 {
     public GameObject playerPrefab;
+    public GameObject cam;
+    public PhotonView pv;
     
     public List<Vector3> spawnpos;
-    private List<bool> spawned = new List<bool>();
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +25,15 @@ public class PlayerLocalControl : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
             // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-            PhotonNetwork.Instantiate(this.playerPrefab.name, choiceSpawnpos(spawnpos), Quaternion.identity, 0);
+            Vector3 pos = choiceSpawnpos(spawnpos);
+            GameObject localplayer = PhotonNetwork.Instantiate(this.playerPrefab.name, pos, Quaternion.identity, 0);
+            GameObject bodycam = PhotonNetwork.Instantiate(this.cam.name, pos, Quaternion.identity, 0);
+            pv = localplayer.GetComponent<PhotonView>();
+            if (pv.IsMine)
+            {
+                localplayer.GetComponent<PlayerController>().BodyCam = bodycam;
+            }   
         }
-        
     }
 
     // Update is called once per frame
@@ -41,7 +49,8 @@ public class PlayerLocalControl : MonoBehaviourPunCallbacks
 
         if (pv != null)
         {
-            return spawnpos[pv.ViewID % 4];
+            
+            return spawnpos[(PhotonNetwork.LocalPlayer.ActorNumber)%4];
         }
 
         else return Vector3.one;
