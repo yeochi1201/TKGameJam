@@ -6,10 +6,8 @@ public class PlayerController : MonoBehaviour ,Damageable
 {
     public PlayerStats Status;
     private Animator animator;
-
-    public float speed;
     
-    private float attakSpeed = 1f;
+    private float attakSpeed = 0.3f;
     public bool canAttack=true;
 
     public bool canAddItem = true;
@@ -24,26 +22,23 @@ public class PlayerController : MonoBehaviour ,Damageable
     Vector3 mousePosition;
     Vector3 direction;
 
-    public SuperPower superPower;
+    SuperPower mySuperPower;
 
-    public bool attacked = false;
-    public float attackSpeed = 1f;
-
+    public bool isSeeRight;
     void Start()
     {
-        speed = 5f;
-        Status = new PlayerStats(100f, speed, 10f);
+        Status = new PlayerStats(100f, 5f, 10f);
         animator = GetComponent<Animator>();
-        SetAttackSpeed(1.5f);
+        isSeeRight=true;
+    
     }
     void Update()
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePosition - this.transform.position;
-        if(!Eating) Move();
+        if(!Eating)Move();
         if (direction.x < 0)
         {
-
             GetComponent<SpriteRenderer>().flipX = true;
         }
         else
@@ -54,37 +49,32 @@ public class PlayerController : MonoBehaviour ,Damageable
         //if(this.Status.Hp<=0) Dead()함수 출력;
     }
 
-    void AttackTrue() {
-        canAttack = true;
-    }
-    void AttackFalse() {
-        canAttack = false;
-    }
-    void SetAttackSpeed(float speed) {
-        animator.SetFloat("attackSpeed", speed);
-        attackSpeed = speed;
-    }
     void Move()
-     {
+    {
         Vector3 movePosition = Vector3.zero;
         float verticalMove = Input.GetAxisRaw("Vertical");
-        // float HorizontalMove = Input.GetAxisRaw("Horizontal");
+        if (verticalMove < 0)
+            isSeeRight=false;
+        else if (verticalMove > 0)
+            isSeeRight=true;
         if(verticalMove != 0) {
-            movePosition += new Vector3(0, verticalMove, 0);
-            animator.SetBool("isWalk", true);
-        }
-        if(Input.GetAxisRaw("Horizontal") < 0) {
-                movePosition += Vector3.left;
-                GetComponent<SpriteRenderer>().flipX = true;
-                animator.SetBool("isWalk", true);
-        }
-        else if(Input.GetAxisRaw("Horizontal") > 0) {
-            movePosition += Vector3.right;
-            GetComponent<SpriteRenderer>().flipX = false;
+            movePosition = new Vector3(0, verticalMove, 0);
             animator.SetBool("isWalk", true);
         }
         else {
-            animator.SetBool("isWalk", false);
+            if(Input.GetAxisRaw("Horizontal") < 0) {
+                movePosition = Vector3.left;
+                GetComponent<SpriteRenderer>().flipX = true;
+                animator.SetBool("isWalk", true);
+            }
+            else if(Input.GetAxisRaw("Horizontal") > 0) {
+                movePosition = Vector3.right;
+                GetComponent<SpriteRenderer>().flipX = false;
+                animator.SetBool("isWalk", true);
+            }
+            else {
+                animator.SetBool("isWalk", false);
+            }
         }
         transform.position += movePosition * this.Status.speed * Time.deltaTime;
     }
@@ -119,6 +109,7 @@ public class PlayerController : MonoBehaviour ,Damageable
     }
     void ConsumeItem(Potion item)
     {
+        StartCoroutine(StartAddItemCooldown());
         switch (item.GetPotionType())
         {
         case PotionType.Hp:
@@ -135,16 +126,23 @@ public class PlayerController : MonoBehaviour ,Damageable
             break;    
         }   
     }
+
     void GetSuperPower(SuperPower item)
     {
-        SuperPower superPower = item.GetComponent<SuperPower>();
-        if (superPower != null)
+        switch(item.GetPowerType())
         {
-            SuperPower newSuperPower = gameObject.AddComponent<SuperPower>();
-            newSuperPower=superPower;
+            case PowerType.Unstoppable:
+                mySuperPower=gameObject.AddComponent<Unstoppable>();
+                break;
+            case PowerType.Electrokinetic:
+                mySuperPower=gameObject.AddComponent<Electrokinetic>();
+                break;
         }
+        if(item.attackSkillPrefab!=null)
+        {
+            mySuperPower.attackSkillPrefab=item.attackSkillPrefab;
+        }   
     }
-
     void Attack()
     {
         animator.SetTrigger("Attack");
@@ -161,14 +159,20 @@ public class PlayerController : MonoBehaviour ,Damageable
         }
     }
     public void HitDamage(float damage)
-    {
-        this.Status.Hp-=damage;
+    {   
+
+        if(mySuperPower == null || mySuperPower.isUnstoppable == false)
+        {
+            this.Status.Hp -= damage;
+        }
+        
     }
     public IEnumerator StartAttackCool()
     {
-    yield return new WaitForSeconds(attakSpeed);
+    yield return new WaitForSeconds(2.0f);
     canAttack = true;
     }
+
     public IEnumerator StartAddItemCooldown()
     {
     yield return new WaitForSeconds(AdditemCoolTime);

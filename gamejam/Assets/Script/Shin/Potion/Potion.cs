@@ -14,6 +14,16 @@ public class Potion : Item
 {
     protected PotionType potionType= PotionType.None;
 
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
     public PotionType GetPotionType()
     {
         return this.potionType;
