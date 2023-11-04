@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - Potion
   - SuperPower
+  - save map
   layers:
   - Default
   - TransparentFX

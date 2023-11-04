@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour ,Damageable
 {
     public PlayerStats Status;
     private Animator animator;
+
+    public float speed;
     
     private float attakSpeed = 0.3f;
     public bool canAttack=true;
@@ -26,7 +28,8 @@ public class PlayerController : MonoBehaviour ,Damageable
 
     void Start()
     {
-        Status = new PlayerStats(100f, 5f, 10f);
+        speed = 5f;
+        Status = new PlayerStats(100f, speed, 10f);
         animator = GetComponent<Animator>();
     }
     void Update()
