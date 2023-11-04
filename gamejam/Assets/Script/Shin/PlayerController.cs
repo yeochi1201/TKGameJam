@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour ,Damageable
     public float attackRange = 3f;
     public LayerMask targetLayer;
 
+    Vector3 mousePosition;
+    Vector3 direction;
+
     void Start()
     {
         Status = new PlayerStats(100f, 5f, 10f);
@@ -20,7 +23,17 @@ public class PlayerController : MonoBehaviour ,Damageable
     }
     void Update()
     {
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        direction = mousePosition - this.transform.position;
         Move();
+        if (direction.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else
+        {
+             GetComponent<SpriteRenderer>().flipX = false;
+        }
         if(canAttack&&Input.GetKey(KeyCode.H))Attack();        
         //if(this.Status.Hp<=0) Dead()함수 출력;
     }
@@ -29,6 +42,7 @@ public class PlayerController : MonoBehaviour ,Damageable
      {
         Vector3 movePosition = Vector3.zero;
         float verticalMove = Input.GetAxisRaw("Vertical");
+        
         if(verticalMove != 0) {
             movePosition = new Vector3(0, verticalMove, 0);
             animator.SetBool("isWalk", true);
