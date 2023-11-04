@@ -41,7 +41,9 @@ public class MapGenerator : MonoBehaviour
         Divide(root, 0);
         GenerateRoom(root, 0);
         GenerateLoad(root, 0);
-        FillWall(); //바깥과 방이 만나는 지점을 벽으로 칠해주는 함수
+        FillWall();
+
+
     }
 
     void Divide(Node tree, int n)
