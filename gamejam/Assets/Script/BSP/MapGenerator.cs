@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,8 +15,23 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int maximumDepth; //트리의 높이, 높을 수록 방을 더 자세히 나누게 됨
     [SerializeField] Tilemap tileMap;
     [SerializeField] Tilemap wallMap;
+    
     [SerializeField] Tile roomTile; //방을 구성하는 타일
+    [SerializeField] Tile roomTile_up;
+    [SerializeField] Tile roomTile_down; 
+    [SerializeField] Tile roomTile_left;
+    [SerializeField] Tile roomTile_right; 
+    [SerializeField] Tile roomTile_leftdownConner; 
+    [SerializeField] Tile roomTile_leftupConner; 
+    [SerializeField] Tile roomTile_rightdownConner;
+    [SerializeField] Tile roomTile_rightupConner; 
     [SerializeField] Tile wallTile; //방과 외부를 구분지어줄 벽 타일
+    [SerializeField] Tile wallTile_left;
+    [SerializeField] Tile wallTile_right;
+    [SerializeField] Tile corridor_x_up; //가로축 복도 타일 상
+    [SerializeField] Tile corridor_x_down; //가로축 복도 타일 하
+    [SerializeField] Tile corridor_y_left; //가로축 복도 타일 좌
+    [SerializeField] Tile corridor_y_right; //가로축 복도 타일 우
     [SerializeField] Tile outTile; //방 외부의 타일
 
     void Start()
@@ -89,14 +105,24 @@ public class MapGenerator : MonoBehaviour
 
         for (int i = Mathf.Min(leftNodeCenter.x, rightNodeCenter.x); i <= Mathf.Max(leftNodeCenter.x, rightNodeCenter.x); i++)
         {
-            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y - mapSize.y / 2, 0), roomTile);
-            tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y-1 - mapSize.y / 2, 0), roomTile);
+            if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y - mapSize.y / 2))!=roomTile)
+            {
+                tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y + 1 - mapSize.y / 2, 0), wallTile);
+                tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y - mapSize.y / 2, 0), corridor_x_up);
+                tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y - 1 - mapSize.y / 2, 0), corridor_x_down);
+                tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, leftNodeCenter.y - 2 - mapSize.y / 2, 0), wallTile);
+            }
         }
 
         for (int j = Mathf.Min(leftNodeCenter.y, rightNodeCenter.y); j <= Mathf.Max(leftNodeCenter.y, rightNodeCenter.y); j++)
         {
-            tileMap.SetTile(new Vector3Int(rightNodeCenter.x + 1 - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile);
-            tileMap.SetTile(new Vector3Int(rightNodeCenter.x - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile);
+            if (tileMap.GetTile(new Vector3Int(j - mapSize.x / 2, leftNodeCenter.y - mapSize.y / 2)) != roomTile)
+            {
+                tileMap.SetTile(new Vector3Int(rightNodeCenter.x + 2 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_right);
+                tileMap.SetTile(new Vector3Int(rightNodeCenter.x + 1 - mapSize.x / 2, j - mapSize.y / 2, 0), corridor_y_right);
+                tileMap.SetTile(new Vector3Int(rightNodeCenter.x - mapSize.x / 2, j - mapSize.y / 2, 0), corridor_y_left);
+                tileMap.SetTile(new Vector3Int(rightNodeCenter.x - 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_left);
+            }
         }
         GenerateLoad(tree.leftNode, n + 1); //자식 노드들도 탐색
         GenerateLoad(tree.rightNode, n + 1);
@@ -119,21 +145,17 @@ public class MapGenerator : MonoBehaviour
         {
             for (int j = 0; j < mapSize.y; j++)
             {
-                if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == outTile)
+                if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == wallTile)
                 {
-                    //바깥타일 일 경우
-                    for (int x = -1; x <= 1; x++)
-                    {
-                        for (int y = -1; y <= 1; y++)
-                        {
-                            if (x == 0 && y == 0) continue;//바깥 타일 기준 8방향을 탐색해서 room tile이 있다면 wall tile로 바꿔준다.
-                            if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2 + x, j - mapSize.y / 2 + y, 0)) == roomTile)
-                            {
-                                wallMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile);
-                                break;
-                            }
-                        }
-                    }
+                    wallMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile);
+                }
+                else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == wallTile_left)
+                {
+                    wallMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_left);
+                }
+                else if (tileMap.GetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0)) == wallTile_right)
+                {
+                    wallMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_right);
                 }
             }
         }
@@ -144,9 +166,66 @@ public class MapGenerator : MonoBehaviour
         {
             for (int j = rect.y; j < rect.y + rect.height; j++)
             {
-                tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile);
+                if (i == rect.x && j == rect.y)     //좌하단
+                {
+                    tileMap.SetTile(new Vector3Int(rect.x - 1 - mapSize.x / 2, rect.y - 1 - mapSize.y / 2, 0), wallTile);
+                    tileMap.SetTile(new Vector3Int(i - 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_left);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - 1 - mapSize.y / 2, 0), wallTile);
+
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_leftdownConner);
+                }
+                else if (i == rect.x + rect.width - 1 && j == rect.y)      // 우하단
+                {
+                    tileMap.SetTile(new Vector3Int(rect.x + rect.width - mapSize.x / 2, rect.y - 1 - mapSize.y / 2, 0), wallTile);
+                    tileMap.SetTile(new Vector3Int(i + 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_right);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - 1 - mapSize.y / 2, 0), wallTile);
+
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_rightdownConner);
+                }
+                else if (i == rect.x && j == rect.y + rect.height - 1)      //좌상단
+                {
+                    tileMap.SetTile(new Vector3Int(rect.x - 1 - mapSize.x / 2, rect.y + rect.height - mapSize.y / 2, 0), wallTile);
+                    tileMap.SetTile(new Vector3Int(i - 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_left);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j + 1 - mapSize.y / 2, 0), wallTile);
+
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_leftupConner); 
+                }
+                else if (i == rect.x + rect.width - 1 && j == rect.y + rect.height - 1)     //우상단
+                {
+                    tileMap.SetTile(new Vector3Int(rect.x + rect.width - mapSize.x / 2, rect.y + rect.height - mapSize.y / 2, 0), wallTile);
+                    tileMap.SetTile(new Vector3Int(i + 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_right);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j + 1 - mapSize.y / 2, 0), wallTile);
+
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_rightupConner); 
+                }
+                else if (i == rect.x)
+                {
+                    tileMap.SetTile(new Vector3Int(i - 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_left);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_left);
+                }
+                else if (i == rect.x + rect.width - 1)
+                {
+                    tileMap.SetTile(new Vector3Int(i + 1 - mapSize.x / 2, j - mapSize.y / 2, 0), wallTile_right);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_right);
+                }
+                else if (j == rect.y + rect.height - 1)
+                {
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j + 1 - mapSize.y / 2, 0), wallTile);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_up);
+                }
+                else if (j == rect.y)
+                {
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - 1 - mapSize.y / 2, 0), wallTile);
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile_down);
+                }
+                else
+                    tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile);
             }
         }
+        
+       
+        
+        
     }
 
 }
