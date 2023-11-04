@@ -128,6 +128,15 @@ public class PlayerController : MonoBehaviour ,Damageable
             }
         } 
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("RestricArea"))
+        {
+            //즉사, 추후에  즉사 파티클 추가
+            HitDamage(10000);
+        }
+           
+    }
     [PunRPC]
     void increaseHP()
     {
