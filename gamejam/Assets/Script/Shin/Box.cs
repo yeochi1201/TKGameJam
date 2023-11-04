@@ -28,6 +28,8 @@ public PlayerController pl;
       {
         pl = other.transform.GetComponentInParent <PlayerController>();
         HitDamage(pl.Status.attackDamage);
+
+        
       }
     } 
     void SpawnRandomItem()
