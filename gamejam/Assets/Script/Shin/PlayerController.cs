@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour ,Damageable
     public bool isSeeRight;
     public bool isDead=false;
 
+    public GameObject AttackBox;
+
     public GameObject[] items; // 드롭할 아이템 프리팹 배열
 
     void Start()
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour ,Damageable
         Status = new PlayerStats(100f,100f, 5f, 10f);
         animator = GetComponent<Animator>();
         isSeeRight=true;
-    
+        AttackBox.SetActive(false);
     }
     void Update()
     {
@@ -49,9 +51,10 @@ public class PlayerController : MonoBehaviour ,Damageable
         {
              GetComponent<SpriteRenderer>().flipX = false;
         }
-        if(canAttack&&Input.GetMouseButtonDown(0)) Attack();        
+        if(canAttack&&Input.GetMouseButtonDown(0));     
         if(this.Status.Hp<=0) Daed();
         if(Input.GetKey(KeyCode.T))this.Status.Hp=0;
+        if(canAttack&&Input.GetKey(KeyCode.F))Attack();
     }
 
     private void Move()
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour ,Damageable
         switch(other.tag)
         {
             case "Potion":
-                if(Input.GetKey(KeyCode.F))
+                if(Input.GetKey(KeyCode.H))
                 {
                     Eating=true;
                     StartCoroutine(StartEating());
@@ -116,9 +119,14 @@ public class PlayerController : MonoBehaviour ,Damageable
      {
       if (other.CompareTag("RestricArea"))
       {
-          //즉사, 추후에  즉사 파티클 추가
-          this.Status.Hp=0;
-      }  
+        this.Status.Hp=0;
+      }
+      if(other.CompareTag("Attack")&& AttackBox!=other.gameObject)
+      {
+        PlayerController pl = other.GetComponentInParent<PlayerController>();
+        //Status.Hp-=pl.Status.attackDamage;
+        HitDamage(pl.Status.attackDamage);
+      }
     } 
     private void ConsumeItem(Potion item)
     {
@@ -160,21 +168,16 @@ public class PlayerController : MonoBehaviour ,Damageable
             mySuperPower.attackSkillPrefab=item.attackSkillPrefab;
         }   
     }
-    private void Attack()
+    public void Attack()
     {
         animator.SetTrigger("Attack");
         canAttack=false;
-        Invoke("StartCoroutine(StartAttackCool());", 1.0f);
         StartCoroutine(StartAttackCool());
-        Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, attackRange, targetLayer);
-        foreach (Collider2D target in hitTargets)
-        {
-            Damageable damageable = target.GetComponent<Damageable>();
-            if (damageable != null) 
-            {
-                damageable.HitDamage(Status.attackDamage); 
-            }
-        }
+        AttackBox.SetActive(true);
+        StartCoroutine(AttackTime());
+
+
+
     }
     public void HitDamage(float damage)
     {   
@@ -210,6 +213,11 @@ public class PlayerController : MonoBehaviour ,Damageable
     {
     yield return new WaitForSeconds(2.0f);
     canAttack = true;
+    }
+    public IEnumerator AttackTime()
+    {
+    yield return new WaitForSeconds(0.5f);
+    AttackBox.SetActive(false);
     }
 
     public IEnumerator StartAddItemCooldown()

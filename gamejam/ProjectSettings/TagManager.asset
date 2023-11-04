@@ -10,6 +10,7 @@ TagManager:
   - SuperPower
   - save map
   - particles
+  - Attack
   layers:
   - Default
   - TransparentFX
