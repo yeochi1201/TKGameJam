@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -33,8 +35,13 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] Tile corridor_y_right; //가로축 복도 타일 우
     [SerializeField] Tile outTile; //방 외부의 타일
 
+    [SerializeField] GameObject boxPrefab;
+
+    private List<Vector3> boxLocationList;
+
     void Start()
     {
+        boxLocationList = new List<Vector3>();
         FillBackground();//신 로드 시 전부다 바깥타일로 덮음
         Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y));
         Divide(root, 0);
@@ -84,10 +91,15 @@ public class MapGenerator : MonoBehaviour
             rect = tree.nodeRect;
             int width = rect.width - roomPadding;
             int height = rect.height - roomPadding;
-            int x = rect.x + roomPadding-1;
-            int y = rect.y + roomPadding-1;
+            int x = rect.x + roomPadding - 1;
+            int y = rect.y + roomPadding - 1;
             rect = new RectInt(x, y, width, height);
             FillRoom(rect);
+
+            int boxCount = Random.Range(1, 4);
+            Debug.Log(boxCount);
+            for (int i = 0; i < boxCount; i++)
+                CreateBox(x,y, width, height);
         }
         else
         {
@@ -223,10 +235,21 @@ public class MapGenerator : MonoBehaviour
                     tileMap.SetTile(new Vector3Int(i - mapSize.x / 2, j - mapSize.y / 2, 0), roomTile);
             }
         }
-        
-       
-        
-        
+    }
+    private void CreateBox(int x, int y, int width, int height)
+    {
+        int randX = Random.Range(x+2, x + width-2)-mapSize.x / 2;
+        int randY = Random.Range(y+2, y + height-2)-mapSize.y / 2;
+        Debug.Log(randX);
+        Debug.Log(randY);
+        Vector3 boxLocation = new Vector3(randX, randY, 0);
+        if (!boxLocationList.Contains(boxLocation))
+        {
+            Instantiate(boxPrefab, boxLocation,Quaternion.identity);
+            boxLocationList.Add(boxLocation);
+            Debug.Log("addedBox");
+        }
+
     }
 
 }
