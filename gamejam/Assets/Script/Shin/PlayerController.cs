@@ -28,9 +28,10 @@ public class PlayerController : MonoBehaviour ,Damageable
     public bool isDead=false;
 
     public GameObject[] items; // 드롭할 아이템 프리팹 배열
+    
     void Start()
     {
-        Status = new PlayerStats(100f, 5f, 10f);
+        Status = new PlayerStats(100f,100f, 5f, 10f);
         animator = GetComponent<Animator>();
         isSeeRight=true;
     
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour ,Damageable
       if (other.CompareTag("RestricArea"))
       {
           //즉사, 추후에  즉사 파티클 추가
-        this.Status.Hp=0;
+          this.Status.Hp=0;
       }  
     } 
     private void ConsumeItem(Potion item)
