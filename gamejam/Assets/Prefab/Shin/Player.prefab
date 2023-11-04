@@ -141,8 +141,10 @@ MonoBehaviour:
     Hp: 0
     speed: 0
     attackDamage: 0
-  moveSpeed: 5
-  attackRange: 2
+  canAttack: 1
+  canAddItem: 1
+  Eating: 0
+  attackRange: 0.5
   targetLayer:
     serializedVersion: 2
     m_Bits: 1

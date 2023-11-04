@@ -10,7 +10,13 @@ public class PlayerController : MonoBehaviour ,Damageable
     private float attakSpeed = 0.3f;
     public bool canAttack=true;
 
-    public float attackRange = 3f;
+    public bool canAddItem = true;
+    private float AdditemCoolTime = 1.0f;
+
+    private float eatTime=1.0f;
+    public bool Eating=false;
+
+    public float attackRange = 0.5f;
     public LayerMask targetLayer;
 
     Vector3 mousePosition;
@@ -25,7 +31,7 @@ public class PlayerController : MonoBehaviour ,Damageable
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePosition - this.transform.position;
-        Move();
+        if(!Eating)Move();
         if (direction.x < 0)
         {
             GetComponent<SpriteRenderer>().flipX = true;
@@ -38,11 +44,11 @@ public class PlayerController : MonoBehaviour ,Damageable
         //if(this.Status.Hp<=0) Dead()함수 출력;
     }
 
+
     void Move()
      {
         Vector3 movePosition = Vector3.zero;
         float verticalMove = Input.GetAxisRaw("Vertical");
-        
         if(verticalMove != 0) {
             movePosition = new Vector3(0, verticalMove, 0);
             animator.SetBool("isWalk", true);
@@ -70,8 +76,9 @@ public class PlayerController : MonoBehaviour ,Damageable
         {
             case "Potion":
                 if(Input.GetKey(KeyCode.F))
-
                 {
+                    Eating=true;
+                    StartCoroutine(StartEating());
                     Potion item = other.GetComponent<Potion>();
                     ConsumeItem(item);
                     Destroy(other.gameObject);  
@@ -81,6 +88,7 @@ public class PlayerController : MonoBehaviour ,Damageable
     }
     void ConsumeItem(Potion item)
     {
+        StartCoroutine(StartAddItemCooldown());
         switch (item.GetPotionType())
         {
         case PotionType.Hp:
@@ -121,5 +129,15 @@ public class PlayerController : MonoBehaviour ,Damageable
     {
     yield return new WaitForSeconds(attakSpeed);
     canAttack = true;
+    }
+    public IEnumerator StartAddItemCooldown()
+    {
+    yield return new WaitForSeconds(AdditemCoolTime);
+    canAddItem = true;
+    }
+    public IEnumerator StartEating()
+    {
+    yield return new WaitForSeconds(eatTime);
+    Eating = false;
     }
 }
