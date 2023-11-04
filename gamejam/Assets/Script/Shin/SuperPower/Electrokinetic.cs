@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Electrokinetic : SuperPower
 {   
-    public float damageRadius = 2.0f;
+    public float damageRadius = 1.0f;
     public LayerMask targetLayer;
 
     // Start is called before the first frame update
