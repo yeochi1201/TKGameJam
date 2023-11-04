@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 5
-  player: {fileID: 4499425717964064720, guid: 6e90506ae2cc641908cd6e8174ce50f7, type: 3}
+  player: {fileID: 796726980}
 --- !u!1 &577574894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,6 +1212,11 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &796726980 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4499425717964064720, guid: 6e90506ae2cc641908cd6e8174ce50f7, type: 3}
+  m_PrefabInstance: {fileID: 361667159}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1129341425
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,24 +52,23 @@ public class PlayerController : MonoBehaviour ,Damageable
      {
         Vector3 movePosition = Vector3.zero;
         float verticalMove = Input.GetAxisRaw("Vertical");
+        // float HorizontalMove = Input.GetAxisRaw("Horizontal");
         if(verticalMove != 0) {
-            movePosition = new Vector3(0, verticalMove, 0);
+            movePosition += new Vector3(0, verticalMove, 0);
+            animator.SetBool("isWalk", true);
+        }
+        if(Input.GetAxisRaw("Horizontal") < 0) {
+                movePosition += Vector3.left;
+                GetComponent<SpriteRenderer>().flipX = true;
+                animator.SetBool("isWalk", true);
+        }
+        else if(Input.GetAxisRaw("Horizontal") > 0) {
+            movePosition += Vector3.right;
+            GetComponent<SpriteRenderer>().flipX = false;
             animator.SetBool("isWalk", true);
         }
         else {
-            if(Input.GetAxisRaw("Horizontal") < 0) {
-                movePosition = Vector3.left;
-                GetComponent<SpriteRenderer>().flipX = true;
-                animator.SetBool("isWalk", true);
-            }
-            else if(Input.GetAxisRaw("Horizontal") > 0) {
-                movePosition = Vector3.right;
-                GetComponent<SpriteRenderer>().flipX = false;
-                animator.SetBool("isWalk", true);
-            }
-            else {
-                animator.SetBool("isWalk", false);
-            }
+            animator.SetBool("isWalk", false);
         }
         transform.position += movePosition * this.Status.speed * Time.deltaTime;
     }
