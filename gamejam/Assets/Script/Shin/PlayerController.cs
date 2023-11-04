@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour ,Damageable
+public class PlayerController : MonoBehaviour ,Damageable
 {
     public PlayerStats Status;
+    private Animator animator;
     
-    public float moveSpeed = 5f; // 이동 속도
+    private float attakSpeed = 0.3f;
+    public bool canAttack=true;
 
     public float attackRange = 3f;
     public LayerMask targetLayer;
@@ -14,22 +16,39 @@ public class Player : MonoBehaviour ,Damageable
     void Start()
     {
         Status = new PlayerStats(100f, 5f, 10f);
+        animator = GetComponent<Animator>();
     }
     void Update()
     {
-        // X축 및 Y축 움직임 입력을 받아 이동
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        
-        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0f) * moveSpeed * Time.deltaTime;
-        transform.Translate(movement);
-        
-        if (Input.GetKeyDown(KeyCode.H))
-        {   
-            Debug.Log("공격중");
-            Attack();
-        }
+        Move();
+        if(canAttack&&Input.GetKey(KeyCode.H))Attack();        
         //if(this.Status.Hp<=0) Dead()함수 출력;
+    }
+
+    void Move()
+     {
+        Vector3 movePosition = Vector3.zero;
+        float verticalMove = Input.GetAxisRaw("Vertical");
+        if(verticalMove != 0) {
+            movePosition = new Vector3(0, verticalMove, 0);
+            animator.SetBool("isWalk", true);
+        }
+        else {
+            if(Input.GetAxisRaw("Horizontal") < 0) {
+                movePosition = Vector3.left;
+                GetComponent<SpriteRenderer>().flipX = true;
+                animator.SetBool("isWalk", true);
+            }
+            else if(Input.GetAxisRaw("Horizontal") > 0) {
+                movePosition = Vector3.right;
+                GetComponent<SpriteRenderer>().flipX = false;
+                animator.SetBool("isWalk", true);
+            }
+            else {
+                animator.SetBool("isWalk", false);
+            }
+        }
+        transform.position += movePosition * this.Status.speed * Time.deltaTime;
     }
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -66,6 +85,9 @@ public class Player : MonoBehaviour ,Damageable
     }
     void Attack()
     {
+        animator.SetTrigger("Attack");
+        canAttack=false;
+        StartCoroutine(StartAttackCool());
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, attackRange, targetLayer);
         foreach (Collider2D target in hitTargets)
         {
@@ -80,5 +102,10 @@ public class Player : MonoBehaviour ,Damageable
     public void HitDamage(float damage)
     {
         this.Status.Hp-=damage;
+    }
+    public IEnumerator StartAttackCool()
+    {
+    yield return new WaitForSeconds(attakSpeed);
+    canAttack = true;
     }
 }
