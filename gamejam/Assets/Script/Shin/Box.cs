@@ -5,7 +5,7 @@ using UnityEngine;
 public class Box : MonoBehaviour,Damageable
 {
     public GameObject[] possibleItems;
-public PlayerController pl;
+
     public float Hp=20;
 
     private void Update()
@@ -21,15 +21,6 @@ public PlayerController pl;
     {
         SpawnRandomItem();   
     }
-    private void  OnTriggerEnter2D(Collider2D other)
-    { 
-       
-      if(other.gameObject.CompareTag("Attack"))
-      {
-        pl = other.transform.GetComponentInParent <PlayerController>();
-        HitDamage(pl.Status.attackDamage);
-      }
-    } 
     void SpawnRandomItem()
     {
         if (possibleItems.Length > 0)
