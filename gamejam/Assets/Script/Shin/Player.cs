@@ -13,7 +13,7 @@ public class Player : MonoBehaviour ,Damageable
 
     void Start()
     {
-        Status = new PlayerStats(100, 5f, 10);
+        Status = new PlayerStats(100f, 5f, 10f);
     }
     void Update()
     {
@@ -24,18 +24,49 @@ public class Player : MonoBehaviour ,Damageable
         Vector3 movement = new Vector3(horizontalInput, verticalInput, 0f) * moveSpeed * Time.deltaTime;
         transform.Translate(movement);
         
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.H))
         {   
             Debug.Log("공격중");
             Attack();
         }
+        //if(this.Status.Hp<=0) Dead()함수 출력;
+    }
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        switch(other.tag)
+        {
+            case "Potion":
+                if(Input.GetKey(KeyCode.F))
+
+                {
+                    Potion item = other.GetComponent<Potion>();
+                    ConsumeItem(item);
+                    Destroy(other.gameObject);  
+                }
+            break;
+        }
+    }
+    void ConsumeItem(Potion item)
+    {
+        switch (item.GetPotionType())
+        {
+        case PotionType.Hp:
+            Status.Hp += 10;  
+            Debug.Log("체력 물약을 먹었습니다.");
+            break;
+        case PotionType.Speed:
+            Status.speed += 1f; 
+            Debug.Log("스피드 물약을 먹었습니다.");
+            break;
+        case PotionType.Strength:
+            Status.attackDamage += 2f; 
+            Debug.Log("힘 물약을 먹었습니다.");
+            break;    
+        }   
     }
     void Attack()
     {
-        // 플레이어의 현재 위치와 방향을 기준으로 공격 범위 내의 대상을 찾음
         Collider2D[] hitTargets = Physics2D.OverlapCircleAll(transform.position, attackRange, targetLayer);
-
-        // 찾은 대상을 순회하면서 처리
         foreach (Collider2D target in hitTargets)
         {
             Damageable damageable = target.GetComponent<Damageable>();
@@ -46,9 +77,8 @@ public class Player : MonoBehaviour ,Damageable
             }
         }
     }
-    public void HitDamage(int damage)
+    public void HitDamage(float damage)
     {
-        // 여기서는 단순히 오브젝트를 파괴하도록 예시를 들었지만, 원하는 동작으로 수정 가능
         this.Status.Hp-=damage;
     }
 }

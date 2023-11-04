@@ -1,11 +1,11 @@
 [System.Serializable]
 public class PlayerStats
 {
-    public int Hp;
+    public float Hp;
     public float speed;
-    public int attackDamage;
+    public float attackDamage;
 
-    public PlayerStats(int Hp, float speed, int attackDamage)
+    public PlayerStats(float Hp, float speed, float attackDamage)
     {
         this.Hp = Hp;
         this.speed = speed;

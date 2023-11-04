@@ -6,15 +6,14 @@ public class Box : MonoBehaviour,Damageable
 {
     public GameObject[] possibleItems;
 
-    public int Hp=20;
+    public float Hp=20;
 
     private void Update()
     {
         if(this.Hp<=0)Destroy(this.gameObject);
     }
-    public void HitDamage(int damage)
+    public void HitDamage(float damage)
     {
-        // 여기서는 단순히 오브젝트를 파괴하도록 예시를 들었지만, 원하는 동작으로 수정 가능
         this.Hp-=damage;
     }
 
