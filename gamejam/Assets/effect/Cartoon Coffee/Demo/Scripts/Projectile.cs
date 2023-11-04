@@ -18,10 +18,10 @@ namespace Demo_Project
         public Color chargeColor = Color.white;
 
         public bool explodeAtScreenEdge = true;
-
+        public float damage=20f;
         public float moveAngle = 0;
         public float spriteAngle = 0;
-        public float moveSpeed = 5;
+        public float moveSpeed = 1f;
         public float angleRandomness = 5;
         //float thetaStep = Mathf.PI / 32f;
         //float theta = 0f;
@@ -105,25 +105,22 @@ namespace Demo_Project
             Destroy(gameObject);
         }
 
-        // Check the collison with the target and the floor
-        void OnCollisionEnter2D(Collision2D col)
+        // Check the collision with the target and the floor
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Collider2D otherCollider = collision.collider;
+        if(otherCollider.gameObject.layer == LayerMask.NameToLayer("Damageable"))
         {
-            for (int i = 0; i < SceneManager.listOfTargets.Count; i++)
+            Damageable damageable = otherCollider.GetComponent<Damageable>();
+            if (damageable != null)
             {
-                if (col.gameObject == listOfTargets[i])
-                {
-                    Impact();
-                }
-            }
-
-            for (int i = 0; i < SceneManager.listOfFloors.Count; i++)
-            {
-                if (col.gameObject == listOfFloors[i])
-                {
-                    Impact();
-                }
+                damageable.HitDamage(damage);
+                Destroy(gameObject);
             }
         }
+
+    // ... (기존 코드)
+}
 
         void RotateProjectile()
         {

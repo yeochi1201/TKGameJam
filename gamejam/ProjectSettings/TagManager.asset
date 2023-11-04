@@ -9,11 +9,12 @@ TagManager:
   - Potion
   - SuperPower
   - save map
+  - particles
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Damameable
+  - Damageable
   - Water
   - UI
   - 

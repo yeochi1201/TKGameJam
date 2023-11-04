@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Demo_Project;
 
 public class Pyrokinesis : SuperPower
 {
@@ -13,7 +14,6 @@ public class Pyrokinesis : SuperPower
         powerType = PowerType.Pyrokinesis;
         skillDamage=20;
         targetLayer = 1 << 3;
-        
     }
 
     protected override void Skill()
@@ -24,9 +24,16 @@ public class Pyrokinesis : SuperPower
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0f; 
 
-        GameObject fireBullet = Instantiate(attackSkillPrefab, mousePosition, Quaternion.identity);
+        GameObject bullet = Instantiate(attackSkillPrefab, transform.position, Quaternion.identity);
+        Projectile projectile = bullet.GetComponent<Projectile>();
 
-
-
+        float angle = Mathf.Atan2(mousePosition.y - transform.position.y, mousePosition.x - transform.position.x);
+        
+        projectile.moveAngle = angle;
+    }
+    protected override IEnumerator SkillCoolTime()
+    {
+        yield return new WaitForSeconds(coolTime);
+        canSkill = true;
     }
 }

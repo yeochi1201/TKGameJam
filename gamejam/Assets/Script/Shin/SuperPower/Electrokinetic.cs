@@ -16,7 +16,6 @@ public class Electrokinetic : SuperPower
         skillDamage=20;
         targetLayer = 1 << 3;
         
-        
     }
     protected override void Skill()
     {

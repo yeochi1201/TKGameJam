@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour ,Damageable
     public bool isDead=false;
 
     public GameObject[] items; // 드롭할 아이템 프리팹 배열
-    
+
     void Start()
     {
         Status = new PlayerStats(100f,100f, 5f, 10f);
@@ -146,12 +146,15 @@ public class PlayerController : MonoBehaviour ,Damageable
         {
             case PowerType.Unstoppable:
                 mySuperPower=gameObject.AddComponent<Unstoppable>();
-                
                 break;
             case PowerType.Electrokinetic:
                 mySuperPower=gameObject.AddComponent<Electrokinetic>();
                 break;
+            case PowerType.Pyrokinesis:
+                mySuperPower=gameObject.AddComponent<Pyrokinesis>();
+                break;
         }
+        mySuperPower.isEquipted=true;
         if(item.attackSkillPrefab!=null)
         {
             mySuperPower.attackSkillPrefab=item.attackSkillPrefab;

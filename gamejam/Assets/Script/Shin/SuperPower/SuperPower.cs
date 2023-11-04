@@ -11,22 +11,22 @@ public enum PowerType
 }
 public class SuperPower : Item
 {
+    protected PowerType powerType= PowerType.None;
     protected float coolTime;
     public bool canSkill=true;
 
     protected float skillDuration;
 
     public bool isUnstoppable=false;
+    public bool isEquipted=false;
 
     public GameObject attackSkillPrefab;
-
-    protected PowerType powerType= PowerType.None;
 
     protected float skillDamage;
     
     protected void Update()
     {
-        if(canSkill&&Input.GetKey(KeyCode.Space))Skill();
+        if(isEquipted&&canSkill&&Input.GetKey(KeyCode.Space))Skill();
     }
 
     protected virtual void Skill()
