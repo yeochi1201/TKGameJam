@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour ,Damageable
 
     public float speed;
     
-    private float attakSpeed = 0.3f;
+    private float attakSpeed = 1f;
     public bool canAttack=true;
 
     public bool canAddItem = true;
@@ -26,17 +26,21 @@ public class PlayerController : MonoBehaviour ,Damageable
 
     public SuperPower superPower;
 
+    public bool attacked = false;
+    public float attackSpeed = 1f;
+
     void Start()
     {
         speed = 5f;
         Status = new PlayerStats(100f, speed, 10f);
         animator = GetComponent<Animator>();
+        SetAttackSpeed(1.5f);
     }
     void Update()
     {
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         direction = mousePosition - this.transform.position;
-        if(!Eating)Move();
+        if(!Eating) Move();
         if (direction.x < 0)
         {
 
@@ -50,7 +54,16 @@ public class PlayerController : MonoBehaviour ,Damageable
         //if(this.Status.Hp<=0) Dead()함수 출력;
     }
 
-
+    void AttackTrue() {
+        attacked = true;
+    }
+    void AttackFalse() {
+        attacked = false;
+    }
+    void SetAttackSpeed(float speed) {
+        animator.SetFloat("attackSpeed", speed);
+        attackSpeed = speed;
+    }
     void Move()
      {
         Vector3 movePosition = Vector3.zero;
@@ -141,7 +154,7 @@ public class PlayerController : MonoBehaviour ,Damageable
         foreach (Collider2D target in hitTargets)
         {
             Damageable damageable = target.GetComponent<Damageable>();
-            if (damageable != null)
+            if (damageable != null) 
             {
                 damageable.HitDamage(Status.attackDamage); 
             }
