@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour ,Damageable
         if(!Eating)Move();
         if (direction.x < 0)
         {
+
             GetComponent<SpriteRenderer>().flipX = true;
         }
         else

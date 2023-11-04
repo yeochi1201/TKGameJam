@@ -25,7 +25,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     #region Monobehaviour Callbacks
     void Awake()
     {
-
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     void Start()
@@ -51,6 +51,10 @@ public class Launcher : MonoBehaviourPunCallbacks
             PhotonNetwork.GameVersion = gameVersion;
         }
     }
+    #endregion
+
+    #region Private Methods
+
     #endregion
 
     #region MonoBehaviourPunCallbacks Callbacks
@@ -90,7 +94,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if(PhotonNetwork.CurrentRoom.PlayerCount==4){
             Debug.Log("Game Start");
-            PhotonNetwork.LoadLevel("BattleField");
         }
     }
     #endregion

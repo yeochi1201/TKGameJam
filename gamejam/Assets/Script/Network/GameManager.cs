@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     #region Public Fields
     public static GameManager instance;
+    public GameObject playerPrefab;
     #endregion
     #region Photon Callbacks
     public override void OnLeftRoom()
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void Start()
     {
         instance = this;
+        
     }
     public void LeaveRoom(int level)
     {
@@ -53,6 +55,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void GameStart()
     {
         PhotonNetwork.LoadLevel("BattleField");
+        if (playerPrefab == null)
+        {
+            Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'", this);
+        }
+        else
+        {
+            Debug.LogFormat("We are Instantiating LocalPlayer from {0}", Application.loadedLevelName);
+            // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+            PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
+        }
     }
     #endregion
 
@@ -65,7 +77,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             return;
         }
         Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-        PhotonNetwork.LoadLevel("Room for Wait");
+        if(PhotonNetwork.CurrentRoom.PlayerCount != 4)
+        {
+            PhotonNetwork.LoadLevel("Room for Wait");
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("BattleField");
+        }
+        
     }
     #endregion
 }
