@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour ,Damageable
         {
              GetComponent<SpriteRenderer>().flipX = false;
         }
-        if(canAttack&&Input.GetKey(KeyCode.H))Attack();        
+        if(canAttack&&Input.GetMouseButtonDown(0))Attack();        
         //if(this.Status.Hp<=0) Dead()함수 출력;
     }
 
