@@ -1,0 +1,288 @@
+fileFormatVersion: 2
+guid: f54ce02fa72fc82429b53f0348809329
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 30
+  spriteBorder: {x: 128, y: 66, z: 289, w: 96}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: scifitiles-sheet_36
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf2cf4297e2576045adf801955ac0154
+      internalID: -637183892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scifitiles-sheet_38
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8392b1cc7dba81a48917b9628acd9460
+      internalID: 773299511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scifitiles-sheet_39
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 96
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23c4a4d7b84fcd74285fbe1efa7a6fe2
+      internalID: 2096184812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: scifitiles-sheet_46
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 66
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d901e7ccf3af81c4a81b483778aabb01
+      internalID: -1375449933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      duple_0: 892560063
+      scifitiles-sheet_0: -555318754
+      scifitiles-sheet_1: -548023321
+      scifitiles-sheet_10: -953126918
+      scifitiles-sheet_11: 1865873024
+      scifitiles-sheet_12: -1074843349
+      scifitiles-sheet_13: 1840740154
+      scifitiles-sheet_14: -1041049034
+      scifitiles-sheet_15: -881822601
+      scifitiles-sheet_16: 624512223
+      scifitiles-sheet_17: 354435516
+      scifitiles-sheet_18: -1268325077
+      scifitiles-sheet_19: 1961640370
+      scifitiles-sheet_2: 1135910276
+      scifitiles-sheet_20: -2058275140
+      scifitiles-sheet_21: -1740894467
+      scifitiles-sheet_22: -661009400
+      scifitiles-sheet_23: 192131038
+      scifitiles-sheet_24: -794915442
+      scifitiles-sheet_25: 196157312
+      scifitiles-sheet_26: -1056569692
+      scifitiles-sheet_27: 663200182
+      scifitiles-sheet_28: 1693801638
+      scifitiles-sheet_29: -781896751
+      scifitiles-sheet_3: -1685995202
+      scifitiles-sheet_30: -292109861
+      scifitiles-sheet_31: -1311825107
+      scifitiles-sheet_32: 933260250
+      scifitiles-sheet_33: 489603673
+      scifitiles-sheet_34: 1409089529
+      scifitiles-sheet_35: -304382853
+      scifitiles-sheet_36: -637183892
+      scifitiles-sheet_37: 410784579
+      scifitiles-sheet_38: 773299511
+      scifitiles-sheet_39: 2096184812
+      scifitiles-sheet_4: 1568169359
+      scifitiles-sheet_40: 1760305733
+      scifitiles-sheet_41: -304899466
+      scifitiles-sheet_42: 1137018615
+      scifitiles-sheet_43: 2055831489
+      scifitiles-sheet_44: -1060657904
+      scifitiles-sheet_45: 1030351965
+      scifitiles-sheet_46: -1375449933
+      scifitiles-sheet_47: -1393422485
+      scifitiles-sheet_48: -1851368731
+      scifitiles-sheet_49: 494805942
+      scifitiles-sheet_5: 1860416768
+      scifitiles-sheet_50: 431741311
+      scifitiles-sheet_51: 1915422667
+      scifitiles-sheet_52: 225232288
+      scifitiles-sheet_53: -422179645
+      scifitiles-sheet_54: -233567563
+      scifitiles-sheet_55: 73645867
+      scifitiles-sheet_56: -191566646
+      scifitiles-sheet_57: -95716584
+      scifitiles-sheet_58: -155898438
+      scifitiles-sheet_59: -1361211366
+      scifitiles-sheet_6: -991000629
+      scifitiles-sheet_60: 182407473
+      scifitiles-sheet_61: -1966468297
+      scifitiles-sheet_62: 1641504353
+      scifitiles-sheet_63: -646710847
+      scifitiles-sheet_64: -1350388573
+      scifitiles-sheet_65: 565796885
+      scifitiles-sheet_66: 496550663
+      scifitiles-sheet_67: 1191739567
+      scifitiles-sheet_68: -1226495667
+      scifitiles-sheet_69: -758556026
+      scifitiles-sheet_7: -2013047067
+      scifitiles-sheet_70: 751715070
+      scifitiles-sheet_71: -1597884509
+      scifitiles-sheet_72: 139447970
+      scifitiles-sheet_73: 416255885
+      scifitiles-sheet_74: 651203419
+      scifitiles-sheet_75: -1784142017
+      scifitiles-sheet_76: -1032465646
+      scifitiles-sheet_77: 1451273009
+      scifitiles-sheet_78: 106773341
+      scifitiles-sheet_79: -1564887353
+      scifitiles-sheet_8: 765509285
+      scifitiles-sheet_9: 716796250
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
