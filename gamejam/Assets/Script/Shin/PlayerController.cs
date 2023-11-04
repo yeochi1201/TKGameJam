@@ -22,10 +22,16 @@ public class PlayerController : MonoBehaviour ,Damageable
     Vector3 mousePosition;
     Vector3 direction;
 
+<<<<<<< Updated upstream
+=======
+    SuperPower mySuperPower;
+
+>>>>>>> Stashed changes
     void Start()
     {
         Status = new PlayerStats(100f, 5f, 10f);
         animator = GetComponent<Animator>();
+    
     }
     void Update()
     {
@@ -43,7 +49,6 @@ public class PlayerController : MonoBehaviour ,Damageable
         if(canAttack&&Input.GetMouseButtonDown(0))Attack();        
         //if(this.Status.Hp<=0) Dead()함수 출력;
     }
-
 
     void Move()
      {
@@ -83,7 +88,23 @@ public class PlayerController : MonoBehaviour ,Damageable
                     ConsumeItem(item);
                     Destroy(other.gameObject);  
                 }
+<<<<<<< Updated upstream
             break;
+=======
+                break;
+            case "SuperPower":
+                if(Input.GetKey(KeyCode.F))
+                {
+                    Eating=true;
+                    StartCoroutine(StartEating());
+                    StartCoroutine(StartAddItemCooldown());
+                    SuperPower item = other.GetComponent<SuperPower>();
+                    GetSuperPower(item);
+                    other.gameObject.SetActive(false);
+                    //other.gameObject.SetActive(false);
+                }
+                break;
+>>>>>>> Stashed changes
         }
     }
     void ConsumeItem(Potion item)
@@ -105,6 +126,19 @@ public class PlayerController : MonoBehaviour ,Damageable
             break;    
         }   
     }
+<<<<<<< Updated upstream
+=======
+    void GetSuperPower(SuperPower item)
+{
+    switch(item.GetPowerType())
+    {
+        case PowerType.Unstoppable:
+            mySuperPower=gameObject.AddComponent<Unstoppable>();
+            break;
+    }
+}
+
+>>>>>>> Stashed changes
     void Attack()
     {
         animator.SetTrigger("Attack");
@@ -122,9 +156,15 @@ public class PlayerController : MonoBehaviour ,Damageable
         }
     }
     public void HitDamage(float damage)
-    {
-        this.Status.Hp-=damage;
+    {   
+
+        if(mySuperPower == null || mySuperPower.isUnstoppable == false)
+        {
+            this.Status.Hp -= damage;
+        }
+        
     }
+
     public IEnumerator StartAttackCool()
     {
     yield return new WaitForSeconds(attakSpeed);
