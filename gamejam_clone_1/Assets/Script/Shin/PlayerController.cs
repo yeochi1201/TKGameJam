@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour ,Damageable
         {
             GameObject bodycam = GameObject.Find("BodyCam");
             bodycam.GetComponentInChildren<CameraController>().player = this.gameObject;
+
+            GameObject playerui = GameObject.Find("PlayerUI");
+            playerui.GetComponent<PlayUI>().playerController = this;
         }
     }
     void Update()

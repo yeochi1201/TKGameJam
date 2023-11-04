@@ -225,7 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b3cc2c9a94f416f813f812cdc25115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BodyCam: {fileID: 0}
   Status:
     Hp: 0
     speed: 0
@@ -239,6 +238,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   isSeeRight: 0
+  isDead: 0
+  items: []
 --- !u!95 &835264266946316280
 Animator:
   serializedVersion: 5
