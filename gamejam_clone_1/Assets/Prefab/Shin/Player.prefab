@@ -149,6 +149,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   isSeeRight: 0
+  items:
+  - {fileID: 3666755588395015819, guid: 7300bbb6008ad4b9a8fa59528acd3851, type: 3}
+  - {fileID: 2016868006080141956, guid: 40d82e08812854afdad11771fd55e2b6, type: 3}
+  - {fileID: 3633440351512085208, guid: 0730191c595544e0fa67505999fa8ced, type: 3}
+  - {fileID: 0}
 --- !u!1 &1413891927011652744
 GameObject:
   m_ObjectHideFlags: 0

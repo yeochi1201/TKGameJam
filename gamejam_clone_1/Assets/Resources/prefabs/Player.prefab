@@ -116,9 +116,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1393091133384854735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 494c5be24157b694bacff2781a29151c, type: 3}
+  m_Script: {fileID: 11500000, guid: 80b3cc2c9a94f416f813f812cdc25115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Status:
+    Hp: 0
+    speed: 0
+    attackDamage: 0
+  speed: 5
+  canAttack: 1
+  canAddItem: 1
+  Eating: 0
+  attackRange: 0.5
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  superPower: {fileID: 0}
+  attacked: 0
+  attackSpeed: 1
 --- !u!1 &6036701976123035390
 GameObject:
   m_ObjectHideFlags: 0

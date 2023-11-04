@@ -9,6 +9,7 @@ TagManager:
   - Potion
   - SuperPower
   - save map
+  - RestrictArea
   layers:
   - Default
   - TransparentFX

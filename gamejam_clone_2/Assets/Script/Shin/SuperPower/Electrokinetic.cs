@@ -25,7 +25,7 @@ public class Electrokinetic : SuperPower
 
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0f; // 마우스 좌표의 z 값을 0으로 고정 (2D 게임이라면)
-
+        
         // Instantiate 파티클 시스템
         GameObject lightningEffect = Instantiate(attackSkillPrefab, mousePosition, Quaternion.identity);
 

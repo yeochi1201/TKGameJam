@@ -6,6 +6,7 @@ public enum PowerType
 {
     Unstoppable,
     Electrokinetic,
+    Pyrokinesis,
     None 
 }
 public class SuperPower : Item
