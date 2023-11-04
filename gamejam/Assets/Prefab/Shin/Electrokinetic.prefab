@@ -114,7 +114,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f03661d9ac0e74ab594d5d31735853b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemStatusPrefab: {fileID: 749781832567941530, guid: c16c20be3416043ab9b31083fc28caa8, type: 3}
+  ItemStatusPrefab: {fileID: 4748292856579356671, guid: b360fe296b2b1430aa9da59a22fe1a59, type: 3}
   canSkill: 1
   isUnstoppable: 0
-  thunderPrefab: {fileID: 4294302568896850296, guid: 3029825dfd92b46ca88fd6f9ca79c850, type: 3}
+  attackSkillPrefab: {fileID: 4294302568896850296, guid: 3029825dfd92b46ca88fd6f9ca79c850, type: 3}
+  damageRadius: 2
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
