@@ -136,9 +136,8 @@ public class PlayerController : MonoBehaviour ,Damageable
         if (other.CompareTag("RestricArea"))
         {
             //즉사, 추후에  즉사 파티클 추가
-            HitDamage(10000);
+            this.Status.Hp = 0;
         }
-           
     }
     [PunRPC]
     void increaseHP()
@@ -154,14 +153,7 @@ public class PlayerController : MonoBehaviour ,Damageable
     {
         Status.attackDamage += 2f;
     }
-    private void OnTriggerEnter2D(Collider2D other)
-     {
-      if (other.CompareTag("RestricArea"))
-      {
-          //즉사, 추후에  즉사 파티클 추가
-        this.Status.Hp=0;
-      }  
-    } 
+
     private void ConsumeItem(Potion item)
     {
         StartCoroutine(StartAddItemCooldown());
