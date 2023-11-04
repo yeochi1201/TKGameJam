@@ -90,7 +90,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if(PhotonNetwork.CurrentRoom.PlayerCount==4){
             Debug.Log("Game Start");
-            GameManager.instance.GameStart();
+            PhotonNetwork.LoadLevel("BattleField");
         }
     }
     #endregion

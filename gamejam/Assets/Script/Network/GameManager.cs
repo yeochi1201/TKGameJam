@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void GameStart()
     {
-        SceneManager.LoadScene(2);
+        PhotonNetwork.LoadLevel("BattleField");
     }
     #endregion
 
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             return;
         }
         Debug.LogFormat("PhotonNetwork : Loading Level : {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-        PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
+        PhotonNetwork.LoadLevel("Room for Wait");
     }
     #endregion
 }
